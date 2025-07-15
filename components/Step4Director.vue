@@ -129,15 +129,25 @@ const addDirector = () => {
                   type="date"
                   v-model="director.dateOfBirth"
                   @input="
-                    formStore.updateArrayItem(
+                    formStore.validateArrayItem(
                       'directors',
-                      director.id,
+                      index,
                       'dateOfBirth',
                       ($event.target as HTMLInputElement).value
                     )
                   "
                   class="theme-input"
+                  :class="{
+                    'border-red-500':
+                      formStore.errors[`directors.${index}.dateOfBirth`],
+                  }"
                 />
+                <p
+                  v-if="formStore.errors[`directors.${index}.dateOfBirth`]"
+                  class="text-red-400 text-sm mt-1"
+                >
+                  {{ formStore.errors[`directors.${index}.dateOfBirth`] }}
+                </p>
               </div>
 
               <div>
@@ -196,16 +206,26 @@ const addDirector = () => {
               <input
                 v-model="director.address"
                 @input="
-                  formStore.updateArrayItem(
+                  formStore.validateArrayItem(
                     'directors',
-                    director.id,
+                    index,
                     'address',
                     ($event.target as HTMLInputElement).value
                   )
                 "
                 class="theme-input"
                 placeholder="Enter full address"
+                :class="{
+                  'border-red-500':
+                    formStore.errors[`directors.${index}.address`],
+                }"
               />
+              <p
+                v-if="formStore.errors[`directors.${index}.address`]"
+                class="text-red-400 text-sm mt-1"
+              >
+                {{ formStore.errors[`directors.${index}.address`] }}
+              </p>
             </div>
 
             <div>
@@ -215,16 +235,26 @@ const addDirector = () => {
               <textarea
                 v-model="director.experience"
                 @input="
-                  formStore.updateArrayItem(
+                  formStore.validateArrayItem(
                     'directors',
-                    director.id,
+                    index,
                     'experience',
                     ($event.target as HTMLInputElement).value
                   )
                 "
                 class="theme-input min-h-[100px] resize-none"
                 placeholder="Describe relevant business or management experience..."
+                :class="{
+                  'border-red-500':
+                    formStore.errors[`directors.${index}.experience`],
+                }"
               ></textarea>
+              <p
+                v-if="formStore.errors[`directors.${index}.experience`]"
+                class="text-red-400 text-sm mt-1"
+              >
+                {{ formStore.errors[`directors.${index}.experience`] }}
+              </p>
             </div>
 
             <div>

@@ -219,15 +219,25 @@ const addShareholder = () => {
                   type="date"
                   v-model="shareholder.dateOfBirth"
                   @input="
-                    formStore.updateArrayItem(
+                    formStore.validateArrayItem(
                       'shareholders',
-                      shareholder.id,
+                      index,
                       'dateOfBirth',
                       ($event.target as HTMLInputElement).value
                     )
                   "
                   class="theme-input"
+                  :class="{
+                    'border-red-500':
+                      formStore.errors[`shareholders.${index}.dateOfBirth`],
+                  }"
                 />
+                <p
+                  v-if="formStore.errors[`shareholders.${index}.dateOfBirth`]"
+                  class="text-red-400 text-sm mt-1"
+                >
+                  {{ formStore.errors[`shareholders.${index}.dateOfBirth`] }}
+                </p>
               </div>
 
               <div>
@@ -300,16 +310,26 @@ const addShareholder = () => {
               <input
                 v-model="shareholder.address"
                 @input="
-                  formStore.updateArrayItem(
+                  formStore.validateArrayItem(
                     'shareholders',
-                    shareholder.id,
+                    index,
                     'address',
                     ($event.target as HTMLInputElement).value
                   )
                 "
                 class="theme-input"
                 placeholder="Enter full address"
+                :class="{
+                  'border-red-500':
+                    formStore.errors[`shareholders.${index}.address`],
+                }"
               />
+              <p
+                v-if="formStore.errors[`shareholders.${index}.address`]"
+                class="text-red-400 text-sm mt-1"
+              >
+                {{ formStore.errors[`shareholders.${index}.address`] }}
+              </p>
             </div>
           </div>
 

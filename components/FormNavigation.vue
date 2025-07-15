@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import { useFormStore } from "~/stores/useFormStore";
+import { computed } from "vue";
 import SaveAndExitButton from "./SaveAndExitButton.vue";
 
 const formStore = useFormStore();
 const primaryColor = "#8b5cf6";
 const primaryHoverColor = "#7c3aed";
+
+// Computed properties to ensure reactivity
+const isButtonDisabled = computed(() => {
+  return formStore.isSubmitting || !formStore.isCurrentStepValid;
+});
+
+const isBackButtonDisabled = computed(() => {
+  return !formStore.canGoBack;
+});
+
+const buttonText = computed(() => {
+  if (formStore.isSubmitting) return "SUBMITTING...";
+  if (formStore.currentStep === 4) return "SUBMIT";
+  return "NEXT";
+});
 
 const handleMouseEnter = (event: Event) => {
   const target = event.target as HTMLElement;
@@ -32,7 +48,7 @@ const handleMouseLeave = (event: Event) => {
       <!-- BACK Button -->
       <button
         @click="formStore.previousStep()"
-        :disabled="!formStore.canGoBack"
+        :disabled="isBackButtonDisabled"
         class="flex items-center justify-center gap-2 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto order-3 sm:order-1"
       >
         <svg
@@ -61,7 +77,7 @@ const handleMouseLeave = (event: Event) => {
             ? formStore.submitForm()
             : formStore.nextStep()
         "
-        :disabled="formStore.isSubmitting || !formStore.isCurrentStepValid"
+        :disabled="isButtonDisabled"
         class="flex items-center justify-center gap-2 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors w-full sm:w-auto order-1 sm:order-3"
         :style="{ backgroundColor: primaryColor }"
         @mouseenter="handleMouseEnter"
@@ -71,10 +87,12 @@ const handleMouseLeave = (event: Event) => {
           v-if="formStore.isSubmitting"
           class="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"
         ></div>
-        <span v-if="formStore.isSubmitting">SUBMITTING...</span>
-        <span v-else-if="formStore.currentStep === 4">SUBMIT</span>
+        <span v-if="formStore.isSubmitting">{{ buttonText }}</span>
+        <template v-else-if="formStore.currentStep === 4">
+          {{ buttonText }}
+        </template>
         <template v-else>
-          NEXT
+          {{ buttonText }}
           <svg
             class="w-4 h-4 sm:w-5 sm:h-5"
             fill="none"

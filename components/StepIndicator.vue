@@ -9,7 +9,7 @@ interface Props {
   currentStep: number;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const primaryColor = "#8b5cf6";
 </script>

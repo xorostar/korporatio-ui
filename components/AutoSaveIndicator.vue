@@ -33,7 +33,12 @@ const formStore = useFormStore();
       ></path>
     </svg>
     <span class="text-sm"
-      >Saved {{ formStore.lastSaved.toLocaleTimeString() }}</span
+      >Saved
+      {{
+        formStore.lastSaved instanceof Date
+          ? formStore.lastSaved.toLocaleTimeString()
+          : "just now"
+      }}</span
     >
   </div>
 </template>

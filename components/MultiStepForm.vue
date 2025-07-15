@@ -18,19 +18,22 @@ const steps = [
 </script>
 
 <template>
-  <div class="bg-slate-900">
-    <StepIndicator
-      :steps="steps"
-      :current-step="formStore.currentStep"
-    />
+  <ClientOnly>
+    <div class="bg-slate-900">
+      <StepIndicator
+        :key="formStore.currentStep"
+        :steps="steps"
+        :current-step="formStore.currentStep"
+      />
 
-    <div class="mb-8">
-      <Step1CompanyDetails v-if="formStore.currentStep === 1" />
-      <Step2Shareholders v-else-if="formStore.currentStep === 2" />
-      <Step3BeneficialOwner v-else-if="formStore.currentStep === 3" />
-      <Step4Director v-else-if="formStore.currentStep === 4" />
+      <div class="mb-8">
+        <Step1CompanyDetails v-if="formStore.currentStep === 1" />
+        <Step2Shareholders v-else-if="formStore.currentStep === 2" />
+        <Step3BeneficialOwner v-else-if="formStore.currentStep === 3" />
+        <Step4Director v-else-if="formStore.currentStep === 4" />
+      </div>
+
+      <FormNavigation />
     </div>
-
-    <FormNavigation />
-  </div>
+  </ClientOnly>
 </template>

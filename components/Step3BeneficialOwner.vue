@@ -130,15 +130,29 @@ const addBeneficialOwner = () => {
                   type="date"
                   v-model="owner.dateOfBirth"
                   @input="
-                    formStore.updateArrayItem(
+                    formStore.validateArrayItem(
                       'beneficialOwners',
-                      owner.id,
+                      index,
                       'dateOfBirth',
                       ($event.target as HTMLInputElement).value
                     )
                   "
                   class="theme-input"
+                  :class="{
+                    'border-red-500':
+                      formStore.errors[`beneficialOwners.${index}.dateOfBirth`],
+                  }"
                 />
+                <p
+                  v-if="
+                    formStore.errors[`beneficialOwners.${index}.dateOfBirth`]
+                  "
+                  class="text-red-400 text-sm mt-1"
+                >
+                  {{
+                    formStore.errors[`beneficialOwners.${index}.dateOfBirth`]
+                  }}
+                </p>
               </div>
 
               <div>
@@ -216,16 +230,26 @@ const addBeneficialOwner = () => {
               <input
                 v-model="owner.address"
                 @input="
-                  formStore.updateArrayItem(
+                  formStore.validateArrayItem(
                     'beneficialOwners',
-                    owner.id,
+                    index,
                     'address',
                     ($event.target as HTMLInputElement).value
                   )
                 "
                 class="theme-input"
                 placeholder="Enter full address"
+                :class="{
+                  'border-red-500':
+                    formStore.errors[`beneficialOwners.${index}.address`],
+                }"
               />
+              <p
+                v-if="formStore.errors[`beneficialOwners.${index}.address`]"
+                class="text-red-400 text-sm mt-1"
+              >
+                {{ formStore.errors[`beneficialOwners.${index}.address`] }}
+              </p>
             </div>
 
             <div>

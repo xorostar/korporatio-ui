@@ -252,7 +252,7 @@ const primaryColor = "#8b5cf6";
                 formStore.updateFormData(
                   'companyInfo',
                   'designation',
-                  $event.target.value
+                  ($event.target as HTMLSelectElement).value
                 )
               "
               class="theme-input text-base md:text-lg py-3"
@@ -312,7 +312,7 @@ const primaryColor = "#8b5cf6";
                 formStore.updateFormData(
                   'countriesOfInterest',
                   'jurisdictionOfOperation',
-                  $event.target.value
+                  ($event.target as HTMLSelectElement).value
                 )
               "
               class="theme-input text-base md:text-lg py-3"
@@ -381,7 +381,7 @@ const primaryColor = "#8b5cf6";
                 formStore.updateFormData(
                   'sharesStructure',
                   'numberOfShares',
-                  parseInt($event.target.value)
+                  parseInt(($event.target as HTMLSelectElement).value)
                 )
               "
               class="theme-input text-base md:text-lg py-3"
@@ -471,7 +471,8 @@ const primaryColor = "#8b5cf6";
                 formStore.updateFormData(
                   'sharesStructure',
                   'numberOfIssuedShares',
-                  parseInt($event.target.value) || undefined
+                  parseInt(($event.target as HTMLInputElement).value) ||
+                    undefined
                 )
               "
               class="theme-input text-base md:text-lg py-3"
@@ -492,7 +493,7 @@ const primaryColor = "#8b5cf6";
                 formStore.updateFormData(
                   'sharesStructure',
                   'valuePerShare',
-                  parseFloat($event.target.value)
+                  parseFloat(($event.target as HTMLSelectElement).value)
                 )
               "
               class="theme-input text-base md:text-lg py-3"
