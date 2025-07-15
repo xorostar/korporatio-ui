@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useFormStore } from "~/stores/useFormStore";
+import { useFormValidation } from "~/composables/useFormValidation";
 
 const formStore = useFormStore();
+const { validateArrayItem } = useFormValidation();
 const primaryColor = "#8b5cf6";
 
 const addBeneficialOwner = () => {
@@ -30,18 +32,18 @@ const addBeneficialOwner = () => {
             Beneficial Owner
           </h2>
           <p class="text-slate-300 leading-relaxed">
-            A beneficial owner is any individual who ultimately owns or controls
-            more than 25% of the company's shares or voting rights, or otherwise
-            exercises control over the company. This information is required for
-            compliance with anti-money laundering regulations.
+            A beneficial owner is any individual who owns or controls 25% or
+            more of the company's shares or voting rights. You must provide
+            detailed information about all beneficial owners for regulatory
+            compliance.
           </p>
 
           <div class="mt-4 p-4 bg-slate-800 rounded-lg">
             <p class="text-sm text-slate-300">
-              Total beneficial ownership:
-              <span class="font-semibold text-blue-400"
-                >{{ formStore.totalBeneficialOwnership }}%</span
-              >
+              Total ownership:
+              <span class="font-semibold text-green-400">
+                {{ formStore.totalBeneficialOwnership }}%
+              </span>
             </p>
           </div>
         </div>
@@ -130,7 +132,7 @@ const addBeneficialOwner = () => {
                   type="date"
                   v-model="owner.dateOfBirth"
                   @input="
-                    formStore.validateArrayItem(
+                    validateArrayItem(
                       'beneficialOwners',
                       index,
                       'dateOfBirth',
@@ -213,11 +215,10 @@ const addBeneficialOwner = () => {
                   class="theme-input"
                 >
                   <option value="">Select source of funds</option>
-                  <option value="salary">Salary/Employment</option>
-                  <option value="business">Business Income</option>
-                  <option value="investment">Investment Returns</option>
+                  <option value="salary">Salary</option>
+                  <option value="business">Business income</option>
+                  <option value="investment">Investment returns</option>
                   <option value="inheritance">Inheritance</option>
-                  <option value="savings">Personal Savings</option>
                   <option value="other">Other</option>
                 </select>
               </div>
@@ -230,7 +231,7 @@ const addBeneficialOwner = () => {
               <input
                 v-model="owner.address"
                 @input="
-                  formStore.validateArrayItem(
+                  validateArrayItem(
                     'beneficialOwners',
                     index,
                     'address',
@@ -253,60 +254,29 @@ const addBeneficialOwner = () => {
             </div>
 
             <div>
-              <label class="text-white text-sm font-medium mb-3 block"
-                >Politically Exposed Person (PEP)</label
+              <label class="text-white text-sm font-medium mb-2 block"
+                >Politically exposed person</label
               >
-              <div class="space-y-2">
-                <div
-                  class="flex items-center space-x-3 bg-slate-700 px-4 py-3 rounded-lg"
+              <div class="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  :id="`pep-${owner.id}`"
+                  v-model="owner.politicallyExposed"
+                  @change="
+                    formStore.updateArrayItem(
+                      'beneficialOwners',
+                      owner.id,
+                      'politicallyExposed',
+                      ($event.target as HTMLInputElement).checked
+                    )
+                  "
+                />
+                <label
+                  :for="`pep-${owner.id}`"
+                  class="text-white text-sm"
                 >
-                  <input
-                    type="radio"
-                    :id="`pep-no-${owner.id}`"
-                    :name="`pep-${owner.id}`"
-                    :value="false"
-                    v-model="owner.politicallyExposed"
-                    @change="
-                      formStore.updateArrayItem(
-                        'beneficialOwners',
-                        owner.id,
-                        'politicallyExposed',
-                        false
-                      )
-                    "
-                  />
-                  <label
-                    :for="`pep-no-${owner.id}`"
-                    class="text-white text-sm"
-                  >
-                    No, I am not a politically exposed person
-                  </label>
-                </div>
-                <div
-                  class="flex items-center space-x-3 bg-slate-700 px-4 py-3 rounded-lg"
-                >
-                  <input
-                    type="radio"
-                    :id="`pep-yes-${owner.id}`"
-                    :name="`pep-${owner.id}`"
-                    :value="true"
-                    v-model="owner.politicallyExposed"
-                    @change="
-                      formStore.updateArrayItem(
-                        'beneficialOwners',
-                        owner.id,
-                        'politicallyExposed',
-                        true
-                      )
-                    "
-                  />
-                  <label
-                    :for="`pep-yes-${owner.id}`"
-                    class="text-white text-sm"
-                  >
-                    Yes, I am or have been a politically exposed person
-                  </label>
-                </div>
+                  This person is a politically exposed person (PEP)
+                </label>
               </div>
             </div>
           </div>

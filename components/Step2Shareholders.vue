@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useFormStore } from "~/stores/useFormStore";
+import { useFormValidation } from "~/composables/useFormValidation";
 
 const formStore = useFormStore();
+const { validateArrayItem } = useFormValidation();
 const primaryColor = "#8b5cf6";
 
 const addShareholder = () => {
@@ -219,7 +221,7 @@ const addShareholder = () => {
                   type="date"
                   v-model="shareholder.dateOfBirth"
                   @input="
-                    formStore.validateArrayItem(
+                    validateArrayItem(
                       'shareholders',
                       index,
                       'dateOfBirth',
@@ -310,7 +312,7 @@ const addShareholder = () => {
               <input
                 v-model="shareholder.address"
                 @input="
-                  formStore.validateArrayItem(
+                  validateArrayItem(
                     'shareholders',
                     index,
                     'address',

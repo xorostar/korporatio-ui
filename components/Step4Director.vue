@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useFormStore } from "~/stores/useFormStore";
+import { useFormValidation } from "~/composables/useFormValidation";
 
 const formStore = useFormStore();
+const { validateArrayItem } = useFormValidation();
 const primaryColor = "#8b5cf6";
 
 const addDirector = () => {
@@ -31,17 +33,9 @@ const addDirector = () => {
           </h2>
           <p class="text-slate-300 leading-relaxed">
             Every BVI company must have at least one director. Directors are
-            responsible for managing the company's affairs and making strategic
-            decisions. Directors can be individuals or corporate entities, and
-            there are no residency requirements for BVI company directors.
+            responsible for managing the company's affairs and making business
+            decisions. You can add multiple directors if needed.
           </p>
-
-          <div class="mt-4 p-4 bg-slate-800 rounded-lg">
-            <p class="text-sm text-slate-300">
-              <strong>Note:</strong> All directors must provide consent to act
-              and meet the minimum age requirement of 18 years.
-            </p>
-          </div>
         </div>
 
         <div class="col-span-8 space-y-6">
@@ -117,7 +111,6 @@ const addDirector = () => {
                   <option value="ca">Canada</option>
                   <option value="au">Australia</option>
                   <option value="de">Germany</option>
-                  <option value="sg">Singapore</option>
                 </select>
               </div>
 
@@ -129,7 +122,7 @@ const addDirector = () => {
                   type="date"
                   v-model="director.dateOfBirth"
                   @input="
-                    formStore.validateArrayItem(
+                    validateArrayItem(
                       'directors',
                       index,
                       'dateOfBirth',
@@ -173,9 +166,9 @@ const addDirector = () => {
                 <label class="text-white text-sm font-medium mb-2 block"
                   >Occupation</label
                 >
-                <select
+                <input
                   v-model="director.occupation"
-                  @change="
+                  @input="
                     formStore.updateArrayItem(
                       'directors',
                       director.id,
@@ -184,18 +177,8 @@ const addDirector = () => {
                     )
                   "
                   class="theme-input"
-                >
-                  <option value="">Select occupation</option>
-                  <option value="business_owner">Business Owner</option>
-                  <option value="executive">Executive/Manager</option>
-                  <option value="professional">
-                    Professional (Lawyer, Accountant, etc.)
-                  </option>
-                  <option value="consultant">Consultant</option>
-                  <option value="investor">Investor</option>
-                  <option value="retired">Retired</option>
-                  <option value="other">Other</option>
-                </select>
+                  placeholder="Enter occupation"
+                />
               </div>
             </div>
 
@@ -206,7 +189,7 @@ const addDirector = () => {
               <input
                 v-model="director.address"
                 @input="
-                  formStore.validateArrayItem(
+                  validateArrayItem(
                     'directors',
                     index,
                     'address',
@@ -230,20 +213,21 @@ const addDirector = () => {
 
             <div>
               <label class="text-white text-sm font-medium mb-2 block"
-                >Relevant experience</label
+                >Experience</label
               >
               <textarea
                 v-model="director.experience"
                 @input="
-                  formStore.validateArrayItem(
+                  validateArrayItem(
                     'directors',
                     index,
                     'experience',
-                    ($event.target as HTMLInputElement).value
+                    ($event.target as HTMLTextAreaElement).value
                   )
                 "
-                class="theme-input min-h-[100px] resize-none"
-                placeholder="Describe relevant business or management experience..."
+                class="theme-input"
+                rows="3"
+                placeholder="Describe relevant experience and qualifications"
                 :class="{
                   'border-red-500':
                     formStore.errors[`directors.${index}.experience`],
@@ -258,60 +242,29 @@ const addDirector = () => {
             </div>
 
             <div>
-              <label class="text-white text-sm font-medium mb-3 block"
-                >Consent to act as director</label
+              <label class="text-white text-sm font-medium mb-2 block"
+                >Consent to act</label
               >
-              <div class="space-y-2">
-                <div
-                  class="flex items-center space-x-3 bg-slate-700 px-4 py-3 rounded-lg"
+              <div class="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  :id="`consent-${director.id}`"
+                  v-model="director.consentToAct"
+                  @change="
+                    formStore.updateArrayItem(
+                      'directors',
+                      director.id,
+                      'consentToAct',
+                      ($event.target as HTMLInputElement).checked
+                    )
+                  "
+                />
+                <label
+                  :for="`consent-${director.id}`"
+                  class="text-white text-sm"
                 >
-                  <input
-                    type="radio"
-                    :id="`consent-yes-${director.id}`"
-                    :name="`consent-${director.id}`"
-                    :value="true"
-                    v-model="director.consentToAct"
-                    @change="
-                      formStore.updateArrayItem(
-                        'directors',
-                        director.id,
-                        'consentToAct',
-                        true
-                      )
-                    "
-                  />
-                  <label
-                    :for="`consent-yes-${director.id}`"
-                    class="text-white text-sm"
-                  >
-                    Yes, I consent to act as a director of this company
-                  </label>
-                </div>
-                <div
-                  class="flex items-center space-x-3 bg-slate-700 px-4 py-3 rounded-lg"
-                >
-                  <input
-                    type="radio"
-                    :id="`consent-no-${director.id}`"
-                    :name="`consent-${director.id}`"
-                    :value="false"
-                    v-model="director.consentToAct"
-                    @change="
-                      formStore.updateArrayItem(
-                        'directors',
-                        director.id,
-                        'consentToAct',
-                        false
-                      )
-                    "
-                  />
-                  <label
-                    :for="`consent-no-${director.id}`"
-                    class="text-white text-sm"
-                  >
-                    No, I do not consent to act as a director
-                  </label>
-                </div>
+                  I consent to act as a director of this company
+                </label>
               </div>
             </div>
           </div>
@@ -335,18 +288,6 @@ const addDirector = () => {
             </svg>
             Add Director
           </button>
-
-          <div
-            v-if="formStore.data.directors.length > 0"
-            class="p-4 bg-blue-900/20 border border-blue-600 rounded-lg"
-          >
-            <h4 class="text-blue-400 font-medium mb-2">Final Review</h4>
-            <p class="text-blue-300 text-sm">
-              Please review all information carefully before submitting. Once
-              submitted, our team will process your BVI company formation within
-              24-48 hours and contact you with the next steps.
-            </p>
-          </div>
         </div>
       </div>
     </section>
