@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #8b5cf6;
+  --color-primary-hover: #7c3aed;
+  --color-background-primary: #0f172a;
+  --color-background-secondary: #1e293b;
+  --color-background-tertiary: #334155;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cbd5e1;
+  --color-border-primary: #475569;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+}
+
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0f172a;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+/* Custom component styles using theme variables */
+.theme-input {
+  background-color: var(--color-background-tertiary);
+  border: 1px solid var(--color-border-primary);
+  color: var(--color-text-primary);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 48px; /* Better touch targets on mobile */
+}
+
+.theme-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.theme-input::placeholder {
+  color: #64748b;
+}
+
+.theme-input.border-red-500 {
+  border-color: var(--color-error);
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 640px) {
+  .theme-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 1rem;
+  }
+
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.theme-select-content {
+  background-color: var(--color-background-tertiary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.theme-select-item {
+  color: var(--color-text-primary);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.theme-select-item:hover {
+  background-color: var(--color-background-secondary);
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+/* Better button styles for mobile */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 1rem;
+  min-height: 48px; /* Better touch targets */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+  }
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Card styles */
+.card {
+  background: var(--color-background-secondary);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border-primary);
+}
+
+/* Loading spinner improvements */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Auto-save indicator mobile positioning */
+@media (max-width: 640px) {
+  .fixed.top-4.right-4 {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+  }
+}
+
+/* Form validation styles */
+.error-message {
+  color: var(--color-error);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.success-icon {
+  color: var(--color-success);
+}
+
+.error-icon {
+  color: var(--color-error);
+}
+
+/* Better spacing for mobile */
+@media (max-width: 768px) {
+  .space-y-12 > * + * {
+    margin-top: 2rem;
+  }
+
+  .space-y-8 > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
