@@ -1,3 +1,5 @@
+import { config } from "~/configs";
+
 interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -15,7 +17,7 @@ class ApiClient {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = "http://localhost:8000/api/v1";
+    this.baseURL = config.apiBaseUrl;
   }
 
   private async request<T>(
